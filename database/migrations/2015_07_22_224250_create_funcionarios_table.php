@@ -14,6 +14,7 @@ class CreateFuncionariosTable extends Migration {
 	{
 		Schema::create('funcionarios', function(Blueprint $table)
 		{
+			$table->increments('id');
 			$table->bigInteger('identificacion_funcionario');
 			$table->string('tipo_documento');
 		    $table->string('nombres');

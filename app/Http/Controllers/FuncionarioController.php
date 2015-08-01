@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\funcionario as funcionario;
 
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class FuncionarioController extends Controller {
 	 */
 	public function index()
 	{
-		//
+		$funcionario = funcionario::all();
+        return \View::make('list', compact('funcionarios'));
 	}
 
 	/**
@@ -23,7 +25,8 @@ class FuncionarioController extends Controller {
 	 * @return Response
 	 */
 	public function create()
-	{
+	{	
+		return \View::make('new');
 		//
 	}
 
@@ -32,8 +35,11 @@ class FuncionarioController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
+		$funcionario = new funcionario;
+        $funcionario ->create($request->all());
+        return redirect('funcionario');
 		//
 	}
 
@@ -56,7 +62,9 @@ class FuncionarioController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$funcionario = funcionario::find($identificacion_funcionario);
+        return \View::make('update', compact('funcionario'));
+//
 	}
 
 	/**
@@ -65,8 +73,23 @@ class FuncionarioController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Request $request)
 	{
+	    $funcionario = funcionario::find($request->identificacion_funcionario);
+        $funcionario->tipo_documento = $request->tipo_documento;
+        $funcionario->nombres =$request->nombres;
+        $funcionario->apellidos =$request->apellidos;
+        $funcionario->cargo =$request->cargo; 
+        $funcionario->especialidad =$request->especialidad;
+        $funcionario->direccion =$request->direccion;
+        $funcionario->email =$request->email;
+        $funcionario->fecha_nacimiento =$request->fecha_nacimiento; 
+        $funcionario->telefono =$request->telefono;
+        $funcionario->genero =$request->genero; 
+     $funcionario->save();
+        return redirect('funcionario');
+
+
 		//
 	}
 
@@ -78,7 +101,17 @@ class FuncionarioController extends Controller {
 	 */
 	public function destroy($id)
 	{
+    	 $funcionario = funcionario::find($identificacion_funcionario);
+         $funcionario->delete();
+         return redirect()->back();
 		//
+	}
+
+    public function search(Request $request)
+    {
+   	      $funcionario = Funcionario::where('nombres','like', '%'.$request->nombres.'%')->get();
+         return \View::make('list', compact('funcionarios'));
+            //
 	}
 
 }

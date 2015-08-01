@@ -15,13 +15,25 @@ Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
 
-Route::resource('Funcionario','FuncionarioController');
+Route::get('nombre/{nombre}', function($nombre){
+    return "Mi nombre es: ".$nombre;
+}); 
 
-Route::get('Funcionario/destroy/{identificacion_funcionario}', ['as' => 'Funcionario/destroy', 'uses' => 'FuncionarioController@destroy']);
+Route::resource('funcionario','FuncionarioController');
+Route::get('funcionario/destroy/{identificacion_funcionario}', ['as' => 'funcionario/destroy', 'uses' => 'FuncionarioController@destroy']);
+Route::post('funcionario/search', ['as' => 'funcionario/search', 'uses'=> 'FuncionarioController@search']);
 
-Route::post('Funcionario/search', ['as' => 'Funcionario/search', 'uses'=> 'FuncionarioController@search']);
+//rutas paciente
+Route::resource('paciente','PacienteController');
+Route::get('paciente/destroy/{id}', ['as' => 'paciente/destroy', 'uses' => 'PacienteController@destroy']);
+Route::post('paciente/search', ['as' => 'paciente/search', 'uses'=> 'PacienteController@search']);
+
+
+Route::resource('comisaria','ComisariaController');
+Route::get('comisaria/destroy/{id}', ['as' => 'comisaria/destroy', 'uses' => 'ComisariaController@destroy']);
+Route::post('comisaria/search', ['as' => 'comisaria/search', 'uses'=> 'ComisariaController@search']);
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
+	'password' =>	 'Auth\PasswordController',
 ]);
